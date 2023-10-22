@@ -224,7 +224,7 @@ sup {
 }
 
 a {
-  color: #696cff;
+  color: #800000;
   text-decoration: none;
 }
 a:hover {
@@ -2792,7 +2792,7 @@ textarea.form-control-lg {
 
 .btn-link {
   font-weight: 400;
-  color: #696cff;
+  color: #800000;
   text-decoration: none;
 }
 .btn-link:hover {
@@ -4269,7 +4269,7 @@ textarea.form-control-lg {
   color: #fff;
   text-align: center;
   white-space: nowrap;
-  background-color: #696cff;
+  background-color: #800000;
   transition: width 0.6s ease;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -5558,7 +5558,7 @@ textarea.form-control-lg {
 }
 
 .link-primary {
-  color: #696cff;
+  color: #800000;
 }
 .link-primary:hover, .link-primary:focus {
   color: #5f61e6;
@@ -8987,7 +8987,7 @@ button.list-group-item-gray.active {
 }
 
 .border-primary {
-  border-color: #696cff !important;
+  border-color: #800000 !important;
 }
 
 .border-secondary {
@@ -9975,7 +9975,7 @@ button.list-group-item-gray.active {
 /* rtl:end:remove */
 .text-primary {
   --bs-text-opacity: 1;
-  color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
+  color: #800000 !important;
 }
 
 .text-secondary {
