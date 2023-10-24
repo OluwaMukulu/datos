@@ -30,12 +30,12 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Sign Up to Datos!</title>
+    <title>Login to Datos!</title>
 
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{% static 'datos/assets/img/favicon/favicon.ico' %}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -73,47 +73,41 @@
     <div class="container-xxl">
       <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
-          <!-- Register Card -->
+          <!-- Register -->
           <div class="card">
             <div class="card-body">
               <!-- Logo -->
-              <div class="app-brand justify-content-center">
-                <a href="index.html" class="app-brand-link gap-2">
-                  <img src="{% static 'datos/assets/img/logo.png' %}" alt/>
-                  <span class="app-brand-text demo text-body fw-bolder">datos</span>
-                </a>
-              </div>
-              <!-- /Logo -->
-              <h4 class="mb-2">Growth starts here!</h4>
-              <p class="mb-4">Business management made easy!</p>
+<div class="app-brand justify-content-center">
+  <div style="margin-bottom: 0;">
+      <img src="{% static 'datos/assets/img/logo.png' %}" alt>
+  </div>
+  <div class="app-brand-link gap-2">
+      <span class="app-brand-text demo text-body fw-bolder">datos</span>
+  </div>
+</div>
+<!-- /Logo -->
+              <h4 class="mb-2">Welcome to Datos!</h4>
+              <p class="mb-4">Sign-in to your account and start growing</p>
 
               <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
-                
-                <label for="username" class="form-label">First & Last Name</label>
                 <div class="mb-3">
-                  <div class="input-group">
-                    <input type="text" aria-label="First name" class="form-control" />
-                    <input type="text" aria-label="Last name" class="form-control" />
-                  </div>
-                </div>
-                
-                {% comment %} <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
+                  <label for="email" class="form-label">Email or Username</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="username"
-                    name="username"
-                    placeholder="Enter your username"
+                    id="email"
+                    name="email-username"
+                    placeholder="Enter your email or username"
                     autofocus
                   />
-                </div> {% endcomment %}
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" />
                 </div>
                 <div class="mb-3 form-password-toggle">
-                  <label class="form-label" for="password">Password</label>
+                  <div class="d-flex justify-content-between">
+                    <label class="form-label" for="password">Password</label>
+                    <a href="auth-forgot-password-basic.html">
+                      <small>Forgot Password?</small>
+                    </a>
+                  </div>
                   <div class="input-group input-group-merge">
                     <input
                       type="password"
@@ -126,28 +120,26 @@
                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                   </div>
                 </div>
-
                 <div class="mb-3">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" />
-                    <label class="form-check-label" for="terms-conditions">
-                      I agree to
-                      <a href="javascript:void(0);">privacy policy & terms</a>
-                    </label>
+                    <input class="form-check-input" type="checkbox" id="remember-me" />
+                    <label class="form-check-label" for="remember-me"> Remember Me </label>
                   </div>
                 </div>
-                <button class="btn btn-primary d-grid w-100">Sign up</button>
+                <div class="mb-3">
+                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                </div>
               </form>
 
               <p class="text-center">
-                <span>Already have an account?</span>
-                <a href="/login">
-                  <span>Sign in instead</span>
+                <span>New to Datos?</span>
+                <a href="/registerpage">
+                  <span>Create an account</span>
                 </a>
               </p>
             </div>
           </div>
-          <!-- Register Card -->
+          <!-- /Register -->
         </div>
       </div>
     </div>
