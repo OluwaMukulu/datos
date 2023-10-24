@@ -1,5 +1,5 @@
-**/migrations/
-*.pyc
-*.pyo
-*__pycache__
-*db.sqlite3
+# **/migrations/
+# *.pyc
+# *.pyo
+# *__pycache__
+# *db.sqlite3
