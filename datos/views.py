@@ -62,3 +62,11 @@ def dashboard(request):
 @login_required(login_url='loginpage')
 def profile(request):
     return render(request, 'profile.html')
+
+@login_required(login_url='loginpage')
+def listexpenses(request):
+    return render(request, 'listexpenses.html')
+
+@login_required(login_url='loginpage')
+def addexpenses(request):
+    return render(request, 'addexpenses.html')
