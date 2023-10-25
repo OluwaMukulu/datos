@@ -70,3 +70,15 @@ def listexpenses(request):
 @login_required(login_url='loginpage')
 def addexpenses(request):
     return render(request, 'addexpenses.html')
+
+@login_required(login_url='loginpage')
+def listincome(request):
+    return render(request, 'listincome.html')
+
+@login_required(login_url='loginpage')
+def addincome(request):
+    return render(request, 'addincome.html')
+
+@login_required(login_url='loginpage')
+def invoice(request):
+    return render(request, 'invoice.html')
