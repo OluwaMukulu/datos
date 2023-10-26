@@ -6,6 +6,7 @@ from .forms import CustomAuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
+from .forms import ExpenseForm
 
 
 
@@ -65,11 +66,61 @@ def profile(request):
 
 @login_required(login_url='loginpage')
 def listexpenses(request):
-    return render(request, 'listexpenses.html')
+
+    expense = Expense.objects.all()  # Assuming Expense is your model name
+    context = {
+        'expense': expense,
+    }
+
+    return render(request, 'listexpenses.html', context)
 
 @login_required(login_url='loginpage')
 def addexpenses(request):
-    return render(request, 'addexpenses.html')
+
+    current_path = request.path
+
+     # Pass a context variable based on the URL path
+    if current_path == '/addexpenses':
+        page_title = 'Add Expense'
+    elif current_path == '/updateexpenses/<str:pk>/':
+        page_title = 'Update Expense'
+    else:
+        page_title = 'Add Expense'
+    form = ExpenseForm()
+
+    if request.method == 'POST':
+        form = ExpenseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listexpenses', context)
+
+    context = {'form':form,'page_title': page_title}
+    return render(request, 'addexpenses.html', context)
+
+@login_required(login_url='loginpage')
+def updateexpenses(request, pk):
+
+    current_path = request.path
+
+     # Pass a context variable based on the URL path
+    if current_path == '/addexpenses':
+        page_title = 'Add Expense'
+    elif current_path == '/updateexpenses/<str:pk>/':
+        page_title = 'Update Expense'
+    else:
+        page_title = 'Update Expense'
+
+    expense = Expense.objects.get(id=pk) 
+    form = ExpenseForm(instance=expense)
+
+    if request.method == 'POST':
+        form = ExpenseForm(request.POST, instance=expense)
+        if form.is_valid():
+            form.save()
+            return redirect('listexpenses')
+
+    context = {'form':form,'page_title': page_title}
+    return render(request, 'addexpenses.html', context)
 
 @login_required(login_url='loginpage')
 def listincome(request):
