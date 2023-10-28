@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import ExpenseForm
+from .models import PAYMENT_METHOD
 
 
 
@@ -51,6 +52,8 @@ def logoutpage(request):
     return redirect('loginpage')
 
 def home(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     return render(request, 'home.html')
 
 @login_required(login_url='loginpage')
@@ -77,38 +80,26 @@ def listexpenses(request):
 @login_required(login_url='loginpage')
 def addexpenses(request):
 
-    current_path = request.path
-
-     # Pass a context variable based on the URL path
-    if current_path == '/addexpenses':
-        page_title = 'Add Expense'
-    elif current_path == '/updateexpenses/<str:pk>/':
-        page_title = 'Update Expense'
-    else:
-        page_title = 'Add Expense'
     form = ExpenseForm()
+
+    expense = Expense.objects.all()
+    payment_methods = [method[0] for method in PAYMENT_METHOD]
+    unique_categories = Expense.objects.values_list('category_name__category_name', flat=True).distinct()
 
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('listexpenses', context)
+            return redirect('listexpenses')
 
-    context = {'form':form,'page_title': page_title}
+    context = {'form':form,'expense': expense,'payment_methods':payment_methods,'unique_categories':unique_categories}
     return render(request, 'addexpenses.html', context)
 
 @login_required(login_url='loginpage')
 def updateexpenses(request, pk):
 
-    current_path = request.path
-
-     # Pass a context variable based on the URL path
-    if current_path == '/addexpenses':
-        page_title = 'Add Expense'
-    elif current_path == '/updateexpenses/<str:pk>/':
-        page_title = 'Update Expense'
-    else:
-        page_title = 'Update Expense'
+    payment_methods = [method[0] for method in PAYMENT_METHOD]
+    unique_categories = Expense.objects.values_list('category_name__category_name', flat=True).distinct()
 
     expense = Expense.objects.get(id=pk) 
     form = ExpenseForm(instance=expense)
@@ -119,8 +110,8 @@ def updateexpenses(request, pk):
             form.save()
             return redirect('listexpenses')
 
-    context = {'form':form,'page_title': page_title}
-    return render(request, 'addexpenses.html', context)
+    context = {'form':form,'payment_methods':payment_methods,'unique_categories':unique_categories}
+    return render(request, 'updateexpenses.html', context)
 
 @login_required(login_url='loginpage')
 def listincome(request):

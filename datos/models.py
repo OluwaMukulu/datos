@@ -110,12 +110,12 @@ class Item(models.Model):
         return self.name
 
 PAYMENT_METHOD = [
-('CS', 'Cash'),
-('CR', 'Card'),
-('CD', 'Credit'),
-('AM', 'Airtel Money'),
-('MM', 'MTN Money'),
-('OT', 'Other')
+('Cash', 'Cash'),
+('Card', 'Card'),
+('Credit', 'Credit'),
+('Airtel Money', 'Airtel Money'),
+('MTN Money', 'MTN Money'),
+('Other', 'Other')
 ]
 
 
@@ -127,7 +127,7 @@ class Expense(models.Model):
     category_name = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateField(null=True)
     amount = models.DecimalField(max_digits=12,decimal_places=2)
-    payment_method = models.CharField(max_length=2, choices=PAYMENT_METHOD)
+    payment_method = models.CharField(max_length=30, choices=PAYMENT_METHOD)
     
 
     class Meta:
