@@ -89,9 +89,13 @@ def addexpenses(request):
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
+            print(form.cleaned_data)
             form.save()
             return redirect('listexpenses')
 
+    else:
+        print(form.errors)
+        
     context = {'form':form,'expense': expense,'payment_methods':payment_methods,'unique_categories':unique_categories}
     return render(request, 'addexpenses.html', context)
 
