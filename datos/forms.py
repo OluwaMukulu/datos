@@ -22,7 +22,7 @@ class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
-class ExpenseForm(ModelForm):
+class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
         fields = '__all__'

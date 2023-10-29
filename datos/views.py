@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import ExpenseForm
 from .models import PAYMENT_METHOD
+from django.db import transaction
 
 
 
@@ -85,18 +86,17 @@ def addexpenses(request):
     expense = Expense.objects.all()
     payment_methods = [method[0] for method in PAYMENT_METHOD]
     unique_categories = Expense.objects.values_list('category_name__category_name', flat=True).distinct()
+    suppliers = Expense.objects.values_list('company_name__company_name', flat=True).distinct()
 
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
             print(form.cleaned_data)
-            form.save()
+            with transaction.atomic():
+                form.save()
             return redirect('listexpenses')
-
-    else:
-        print(form.errors)
         
-    context = {'form':form,'expense': expense,'payment_methods':payment_methods,'unique_categories':unique_categories}
+    context = {'form':form,'expense': expense,'payment_methods':payment_methods,'unique_categories':unique_categories,'suppliers':suppliers}
     return render(request, 'addexpenses.html', context)
 
 @login_required(login_url='loginpage')

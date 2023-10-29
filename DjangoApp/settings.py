@@ -139,3 +139,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 USE_L10N = True
 USE_THOUSAND_SEPARATOR = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+    'django.db.backends': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
