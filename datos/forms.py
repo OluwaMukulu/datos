@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Expense
+from .models import Expense, Category
 from django.forms import ModelForm
 
 
@@ -25,4 +25,17 @@ class CustomAuthenticationForm(AuthenticationForm):
 class ExpenseForm(ModelForm):
     class Meta:
         model = Expense
-        fields = '__all__'
+        fields = ['name','description','amount','date','category_name']
+
+        widgets = {
+            'category_name': forms.Select(attrs={'class': 'form-select'})
+        }
+
+    # Override the category_name field to use ChoiceField
+    category_name = forms.ModelChoiceField(queryset=Category.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(ExpenseForm, self).__init__(*args, **kwargs)
+        # Populate choices for the category_name field
+        unique_categories = Expense.objects.values_list('category_name__category_name', flat=True).distinct()
+        self.fields['category_name'].choices = [(category, category) for category in unique_categories]

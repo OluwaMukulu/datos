@@ -125,9 +125,9 @@ class Expense(models.Model):
     description = models.TextField(blank=True,null=True)
     company_name = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True,blank=True)
     category_name = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    date = models.DateField(null=True)
-    amount = models.DecimalField(max_digits=12,decimal_places=2)
-    payment_method = models.CharField(max_length=30, choices=PAYMENT_METHOD)
+    date = models.DateField(null=True,blank=True)
+    amount = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True)
+    payment_method = models.CharField(max_length=30, choices=PAYMENT_METHOD,null=True,blank=True)
     
 
     class Meta:
