@@ -5,7 +5,17 @@ from .models import Expense, Category
 from django.forms import ModelForm
 
 
+class ExpenseForm(ModelForm):
 
+    category_name = forms.ModelChoiceField(queryset=Category.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-select'}))
+
+    class Meta:
+        model = Expense
+        fields = '__all__'
+        widgets = {
+            'category_name': forms.Select(attrs={'class': 'form-select'})  # Add Bootstrap form-select class for consistency
+        }
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -22,20 +32,17 @@ class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
-class ExpenseForm(ModelForm):
-    class Meta:
-        model = Expense
-        fields = ['name','description','amount','date','category_name']
 
-        widgets = {
-            'category_name': forms.Select(attrs={'class': 'form-select'})
-        }
 
-    # Override the category_name field to use ChoiceField
-    category_name = forms.ModelChoiceField(queryset=Category.objects.all())
+    #     widgets = {
+    #         'category_name': forms.Select(attrs={'class': 'form-select'})
+    #     }
 
-    def __init__(self, *args, **kwargs):
-        super(ExpenseForm, self).__init__(*args, **kwargs)
-        # Populate choices for the category_name field
-        unique_categories = Expense.objects.values_list('category_name__category_name', flat=True).distinct()
-        self.fields['category_name'].choices = [(category, category) for category in unique_categories]
+    # # Override the category_name field to use ChoiceField
+    # category_name = forms.ModelChoiceField(queryset=Category.objects.all())
+
+    # def __init__(self, *args, **kwargs):
+    #     super(ExpenseForm, self).__init__(*args, **kwargs)
+    #     # Populate choices for the category_name field
+    #     unique_categories = Expense.objects.values_list('category_name__category_name', flat=True).distinct()
+    #     self.fields['category_name'].choices = [(category, category) for category in unique_categories]

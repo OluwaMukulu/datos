@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import *
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login
@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import ExpenseForm
 from .models import PAYMENT_METHOD
+
 
 
 
@@ -82,26 +83,15 @@ def addexpenses(request):
     form = ExpenseForm()
     expense = Expense.objects.all()
     payment_methods = [method[0] for method in PAYMENT_METHOD]
-    unique_categories = Expense.objects.values_list('category_name__category_name', flat=True).distinct()
+    categories = Category.objects.all()
 
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
-            category_name = form.cleaned_data['category_name']
-            category_instance, created = Category.objects.get_or_create(category_name=category_name)
-            
-            # Create a new Expense instance and assign the Category instance
-            expense = form.save(commit=False)
-            expense.category_name = category_instance
-            expense.save()
-            
-            print(form.cleaned_data)
+            expense = form.save()
             return redirect('listexpenses')
 
-    else:
-        print(form.errors)
-        
-    context = {'form': form, 'expense': expense, 'payment_methods': payment_methods, 'unique_categories': unique_categories}
+    context = {'form': form, 'expense': expense, 'payment_methods': payment_methods, 'categories': categories}
     return render(request, 'addexpenses.html', context)
 
 @login_required(login_url='loginpage')
