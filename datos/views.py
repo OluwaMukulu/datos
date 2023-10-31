@@ -97,11 +97,11 @@ def addexpenses(request):
 @login_required(login_url='loginpage')
 def updateexpenses(request, pk):
 
-    payment_methods = [method[0] for method in PAYMENT_METHOD]
-    unique_categories = Expense.objects.values_list('category_name__category_name', flat=True).distinct()
-
     expense = Expense.objects.get(id=pk) 
     form = ExpenseForm(instance=expense)
+    payment_methods = [method[0] for method in PAYMENT_METHOD]
+    categories = Category.objects.all()
+    
 
     if request.method == 'POST':
         form = ExpenseForm(request.POST, instance=expense)
@@ -109,7 +109,7 @@ def updateexpenses(request, pk):
             form.save()
             return redirect('listexpenses')
 
-    context = {'form':form,'payment_methods':payment_methods,'unique_categories':unique_categories}
+    context = {'form':form,'payment_methods':payment_methods,'categories':categories}
     return render(request, 'updateexpenses.html', context)
 
 @login_required(login_url='loginpage')
