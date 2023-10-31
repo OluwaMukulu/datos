@@ -13,7 +13,9 @@ urlpatterns = [
     path('addexpenses/', views.addexpenses, name='addexpenses'),
     path('updateexpenses/<str:pk>/', views.updateexpenses, name='updateexpenses'),
     path('deleteexpense/<str:pk>/', views.deleteexpense, name='deleteexpense'),
-    path('addincome/', views.addincome, name='addincome'),
     path('listincome/', views.listincome, name='listincome'),
+    path('addincome/', views.addincome, name='addincome'),
+    path('updateincome/<str:pk>/', views.updateincome, name='updateincome'),
+    path('deleteincome/<str:pk>/', views.deleteincome, name='deleteincome'),
     path('invoice/', views.invoice, name='invoice'),
 ]

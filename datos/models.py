@@ -138,4 +138,33 @@ class Expense(models.Model):
          return truncatechars(self.description,50)
     def __str__(self):
         return self.name
+    
+
+PAYMENT_METHOD = [
+('Cash', 'Cash'),
+('Card', 'Card'),
+('Credit', 'Credit'),
+('Airtel Money', 'Airtel Money'),
+('MTN Money', 'MTN Money'),
+('Other', 'Other')
+]
+
+
+class Income(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True,null=True)
+    company_name = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True,blank=True)
+    category_name = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    date = models.DateField(null=True,blank=True)
+    amount = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True)
+    payment_method = models.CharField(max_length=30, choices=PAYMENT_METHOD,null=True,blank=True)
+    
+
+    class Meta:
+        verbose_name_plural = 'Income'
+    @property
+    def short_description(self):
+         return truncatechars(self.description,50)
+    def __str__(self):
+        return self.name
 

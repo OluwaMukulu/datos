@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Address,Category,Item,Supplier,Expense
+from .models import Address,Category,Item,Supplier,Expense,Income
 
 
 # Register your models here.
@@ -34,6 +34,11 @@ class ExpenseAdmin(admin.ModelAdmin):
     search_fields = ['name','company_name','category_name']
     list_filter = ('date','category_name','payment_method')
 
+class IncomeAdmin(admin.ModelAdmin):
+    list_display = ('name','short_description','company_name','category_name', 'date', 'amount', 'payment_method')
+    search_fields = ['name','company_name','category_name']
+    list_filter = ('date','category_name','payment_method')
+
 
 
 
@@ -42,4 +47,5 @@ admin.site.register(Supplier, SupplierAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Expense, ExpenseAdmin)
+admin.site.register(Income, IncomeAdmin)
 

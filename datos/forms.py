@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Expense, Category
+from .models import Expense, Category, Income
 from django.forms import ModelForm
 
 
@@ -12,6 +12,18 @@ class ExpenseForm(ModelForm):
 
     class Meta:
         model = Expense
+        fields = '__all__'
+        widgets = {
+            'category_name': forms.Select(attrs={'class': 'form-select'})  # Add Bootstrap form-select class for consistency
+        }
+
+class IncomeForm(ModelForm):
+
+    category_name = forms.ModelChoiceField(queryset=Category.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-select'}))
+
+    class Meta:
+        model = Income
         fields = '__all__'
         widgets = {
             'category_name': forms.Select(attrs={'class': 'form-select'})  # Add Bootstrap form-select class for consistency

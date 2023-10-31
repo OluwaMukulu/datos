@@ -6,7 +6,7 @@ from .forms import CustomAuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
-from .forms import ExpenseForm
+from .forms import ExpenseForm, IncomeForm
 from .models import PAYMENT_METHOD
 from django.db.models import Sum
 
@@ -62,15 +62,16 @@ def home(request):
 @login_required(login_url='loginpage')
 def dashboard(request):
 
-    total_expenses = Expense.objects.aggregate(total_amount=Sum('amount'))['total_amount']
-
-    # Check if total_amount is None (no expenses in the database) and set it to 0 if it is None
+    total_expenses = Expense.objects.aggregate(total_exp=Sum('amount'))['total_exp']
     total_expenses = total_expenses if total_expenses is not None else 0
-    
-    # if request.user.is_authenticated:
-    #     context['first_name'] = request.user.first_name
 
-    context = {'total_expenses':total_expenses}
+    total_income = Income.objects.aggregate(total_inc=Sum('amount'))['total_inc']
+    total_income = total_income if total_income is not None else 0
+
+    profit = total_income - total_expenses
+
+
+    context = {'total_expenses':total_expenses,'total_income':total_income,'profit':profit}
     return render(request, 'dashboard.html', context)
 
 @login_required(login_url='loginpage')
@@ -133,14 +134,77 @@ def deleteexpense(request, pk):
     context={'expense':expense}
     return render(request, 'deleteexpense.html',context)
 
+
+
 @login_required(login_url='loginpage')
 def listincome(request):
-    return render(request, 'listincome.html')
+
+    income = Income.objects.all()  # Assuming Expense is your model name
+    context = {
+        'income': income,
+    }
+
+    return render(request, 'listincome.html', context)
 
 @login_required(login_url='loginpage')
 def addincome(request):
-    return render(request, 'addincome.html')
+    form = IncomeForm()
+    income = Income.objects.all()
+    payment_methods = [method[0] for method in PAYMENT_METHOD]
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        form = IncomeForm(request.POST)
+        if form.is_valid():
+            income = form.save()
+            return redirect('listincome')
+
+    context = {'form': form, 'income': income, 'payment_methods': payment_methods, 'categories': categories}
+    return render(request, 'addincome.html', context)
+
+@login_required(login_url='loginpage')
+def updateincome(request, pk):
+
+    income = Income.objects.get(id=pk) 
+    form = IncomeForm(instance=income)
+    payment_methods = [method[0] for method in PAYMENT_METHOD]
+    categories = Category.objects.all()
+    
+
+    if request.method == 'POST':
+        form = IncomeForm(request.POST, instance=income)
+        if form.is_valid():
+            form.save()
+            return redirect('listincome')
+
+    context = {'form':form,'payment_methods':payment_methods,'categories':categories}
+    return render(request, 'updateincome.html', context)
+
+@login_required(login_url='loginpage')
+def deleteincome(request, pk):
+
+    income = Income.objects.get(id=pk)
+     
+    if request.method == 'POST':
+         income.delete()
+         return redirect('listincome')
+
+    context={'income':income}
+    return render(request, 'deleteincome.html',context)
+
+
 
 @login_required(login_url='loginpage')
 def invoice(request):
     return render(request, 'invoice.html')
+
+def dashboardcharts(request):
+    expenses = Expense.objects.all()
+    amounts = []
+    dates = []
+    for expense in expenses:
+        amounts.append(expense.amount)
+        dates.append(expense.date.strftime('%Y-%m-%d'))
+
+    context = {'amounts': amounts, 'dates': dates}
+    return render(request, 'dashboard.html', context)
