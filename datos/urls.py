@@ -12,6 +12,7 @@ urlpatterns = [
     path('listexpenses/', views.listexpenses, name='listexpenses'),
     path('addexpenses/', views.addexpenses, name='addexpenses'),
     path('updateexpenses/<str:pk>/', views.updateexpenses, name='updateexpenses'),
+    path('deleteexpense/<str:pk>/', views.deleteexpense, name='deleteexpense'),
     path('addincome/', views.addincome, name='addincome'),
     path('listincome/', views.listincome, name='listincome'),
     path('invoice/', views.invoice, name='invoice'),

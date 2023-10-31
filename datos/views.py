@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import ExpenseForm
 from .models import PAYMENT_METHOD
+from django.db.models import Sum
+
 
 
 
@@ -59,9 +61,16 @@ def home(request):
 
 @login_required(login_url='loginpage')
 def dashboard(request):
-    context = {}
-    if request.user.is_authenticated:
-        context['first_name'] = request.user.first_name
+
+    total_expenses = Expense.objects.aggregate(total_amount=Sum('amount'))['total_amount']
+
+    # Check if total_amount is None (no expenses in the database) and set it to 0 if it is None
+    total_expenses = total_expenses if total_expenses is not None else 0
+    
+    # if request.user.is_authenticated:
+    #     context['first_name'] = request.user.first_name
+
+    context = {'total_expenses':total_expenses}
     return render(request, 'dashboard.html', context)
 
 @login_required(login_url='loginpage')
@@ -111,6 +120,18 @@ def updateexpenses(request, pk):
 
     context = {'form':form,'payment_methods':payment_methods,'categories':categories}
     return render(request, 'updateexpenses.html', context)
+
+@login_required(login_url='loginpage')
+def deleteexpense(request, pk):
+
+    expense = Expense.objects.get(id=pk)
+     
+    if request.method == 'POST':
+         expense.delete()
+         return redirect('listexpenses')
+
+    context={'expense':expense}
+    return render(request, 'deleteexpense.html',context)
 
 @login_required(login_url='loginpage')
 def listincome(request):

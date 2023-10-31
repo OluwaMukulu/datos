@@ -224,8 +224,8 @@
                       </div>
                     </div>
                   </div>
-                  <span class="fw-semibold d-block mb-1">Transactions</span>
-                  <h3 class="card-title mb-2">K14,857</h3>
+                  <span class="fw-semibold d-block mb-1">Expenses</span>
+                  <h4 class="card-title mb-2">K{{total_expenses|floatformat:0}}</h4>
                   <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
                 </div>
               </div>
@@ -262,8 +262,7 @@
           <div class="card h-100">
             <div class="card-header d-flex align-items-center justify-content-between pb-0">
               <div class="card-title mb-0">
-                <h5 class="m-0 me-2">Order Statistics</h5>
-                <small class="text-muted">42.82k Total Sales</small>
+                <h5 class="m-0 me-2">Expense Statistics</h5>
               </div>
               <div class="dropdown">
                 <button
@@ -277,17 +276,15 @@
                   <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
-                  <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-                  <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                  <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                  <a class="dropdown-item" href="/listexpenses">View all</a>
                 </div>
               </div>
             </div>
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex flex-column align-items-center gap-1">
-                  <h2 class="mb-2">8,258</h2>
-                  <span>Total Orders</span>
+                  <h2 class="mb-2">K{{total_expenses|floatformat:0}}</h2>
+                  <span>Total Expenses</span>
                 </div>
                 <div id="orderStatisticsChart"></div>
               </div>
