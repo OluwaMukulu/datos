@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import ExpenseForm, IncomeForm
 from .models import PAYMENT_METHOD
 from django.db.models import Sum
+import calendar
 
 
 
@@ -64,15 +65,40 @@ def dashboard(request):
     # Fetching data from Expense model for the chart
     expenses_data = Expense.objects.values('date__month').annotate(total_amount=Sum('amount'))
 
-    # Extracting month and amount data for Highcharts
-    months = []
-    amounts = []
+    # Fetching data from Income model for the chart
+    income_data = Income.objects.values('date__month').annotate(total_amount=Sum('amount'))
+
+    # Prepare sorted and formatted data for expenses and income
+    sorted_expense_data = [0] * 12
+    sorted_income_data = [0] * 12
+
     for entry in expenses_data:
-        months.append(entry['date__month'])
-        amounts.append(float(entry['total_amount']))
+        sorted_expense_data[entry['date__month'] - 1] = float(entry['total_amount'])
 
-    context = {'months': months, 'amounts': amounts}
+    for entry in income_data:
+        sorted_income_data[entry['date__month'] - 1] = float(entry['total_amount'])
 
+    # Calculate profit data
+    profit_data = [round(income - expense, 2) for income, expense in zip(sorted_income_data, sorted_expense_data)]
+
+    # Filter out months with zero data
+    months_with_data = [
+        calendar.month_abbr[month + 1] for month, (expense, income, profit) in enumerate(
+            zip(sorted_expense_data, sorted_income_data, profit_data)
+        )
+        if expense > 0 or income > 0 or profit > 0
+    ]
+    filtered_expense_data = [amount for amount in sorted_expense_data if amount > 0]
+    filtered_income_data = [amount for amount in sorted_income_data if amount > 0]
+    filtered_profit_data = [amount for amount in profit_data if amount > 0]
+
+    context = {
+        'formatted_months': months_with_data,
+        'sorted_expense_data': filtered_expense_data,
+        'sorted_income_data': filtered_income_data,
+        'sorted_profit_data': filtered_profit_data
+    }
+    
     total_expenses = Expense.objects.aggregate(total_exp=Sum('amount'))['total_exp']
     total_expenses = total_expenses if total_expenses is not None else 0
 
