@@ -61,6 +61,17 @@ def home(request):
 
 @login_required(login_url='loginpage')
 def dashboard(request):
+    # Fetching data from Expense model for the chart
+    expenses_data = Expense.objects.values('date__month').annotate(total_amount=Sum('amount'))
+
+    # Extracting month and amount data for Highcharts
+    months = []
+    amounts = []
+    for entry in expenses_data:
+        months.append(entry['date__month'])
+        amounts.append(float(entry['total_amount']))
+
+    context = {'months': months, 'amounts': amounts}
 
     total_expenses = Expense.objects.aggregate(total_exp=Sum('amount'))['total_exp']
     total_expenses = total_expenses if total_expenses is not None else 0
@@ -70,8 +81,8 @@ def dashboard(request):
 
     profit = total_income - total_expenses
 
+    context.update({'total_expenses': total_expenses, 'total_income': total_income, 'profit': profit})
 
-    context = {'total_expenses':total_expenses,'total_income':total_income,'profit':profit}
     return render(request, 'dashboard.html', context)
 
 @login_required(login_url='loginpage')
