@@ -3,6 +3,15 @@
 * File include item demo only specific css only
 ******************************************************************************/
 
+.card-container {
+  display: flex;
+  justify-content: space-between; /* Optional: Adjust this based on your layout needs */
+}
+
+.card {
+  flex: 1;
+}
+
 .menu .app-brand.demo {
   height: 64px;
   margin-top: 12px;
