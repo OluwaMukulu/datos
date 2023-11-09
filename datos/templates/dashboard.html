@@ -87,9 +87,9 @@
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script> {% endcomment %}
 <script type="text/javascript">
   var months = {{ formatted_months|safe }};
   var expenseAmounts = {{ sorted_expense_data|safe }};
@@ -163,25 +163,27 @@
     },
     plotOptions: {
       column: {
-        pointPadding: 0.2,
+        borderRadius: 15,
+        pointPadding: 0,
+        pointWidth: 20,
         borderWidth: 0
       }
     },
     series: [{
       name: 'Expenses',
       data: expenseAmounts,
-      color: 'red' // Set the hexadecimal color for the expenses series
+      color: '#800000' // Set the hexadecimal color for the expenses series
     },
     {
       name: 'Income',
       data: incomeAmounts,
-      color: '#3498db' // Set the hexadecimal color for the income series
+      color: '#66ff00' // Set the hexadecimal color for the income series
     },
     {
       name: 'Profit',
       type: 'spline',
       data: profitAmounts,
-      color: '#66ff00',
+      color: 'orange',
       marker: {
         symbol: 'diamond', // Set the marker shape to diamond
         radius: 6 // Set the marker size if needed

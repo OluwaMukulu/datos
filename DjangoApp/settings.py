@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'datos',
+    'rest_framework',
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -157,3 +159,6 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
+

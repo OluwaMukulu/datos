@@ -10,12 +10,27 @@ from .forms import ExpenseForm, IncomeForm
 from .models import PAYMENT_METHOD
 from django.db.models import Sum
 import calendar
+from  rest_framework.decorators import api_view
+from  rest_framework.response import Response
+from .serializers import ExpenseSerializer, IncomeSerializer
 
 
 
 
 
 # Create your views here.
+@api_view(['GET'])
+def listIncome(request):
+    inc = Income.objects.all()
+    serializer = IncomeSerializer(inc, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def listExpense(request):
+    exp = Expense.objects.all()
+    serializer = ExpenseSerializer(exp, many=True)
+    return Response(serializer.data)
+
 def loginpage(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
@@ -60,7 +75,7 @@ def home(request):
         return redirect('dashboard')
     return render(request, 'home.html')
 
-#@login_required(login_url='loginpage')
+@login_required(login_url='loginpage')
 def dashboard(request):
     # Fetching data from Expense model for the chart
     expenses_data = Expense.objects.values('date__month').annotate(total_amount=Sum('amount'))
@@ -125,7 +140,7 @@ def listexpenses(request):
 
     return render(request, 'listexpenses.html', context)
 
-#@login_required(login_url='loginpage')
+@login_required(login_url='loginpage')
 def addexpenses(request):
     form = ExpenseForm()
     expense = Expense.objects.all()
@@ -141,7 +156,7 @@ def addexpenses(request):
     context = {'form': form, 'expense': expense, 'payment_methods': payment_methods, 'categories': categories}
     return render(request, 'addexpenses.html', context)
 
-#@login_required(login_url='loginpage')
+@login_required(login_url='loginpage')
 def updateexpenses(request, pk):
 
     expense = Expense.objects.get(id=pk) 
@@ -159,7 +174,7 @@ def updateexpenses(request, pk):
     context = {'form':form,'payment_methods':payment_methods,'categories':categories}
     return render(request, 'updateexpenses.html', context)
 
-#@login_required(login_url='loginpage')
+@login_required(login_url='loginpage')
 def deleteexpense(request, pk):
 
     expense = Expense.objects.get(id=pk)
@@ -173,7 +188,7 @@ def deleteexpense(request, pk):
 
 
 
-#@login_required(login_url='loginpage')
+@login_required(login_url='loginpage')
 def listincome(request):
 
     income = Income.objects.all()  # Assuming Expense is your model name
@@ -183,7 +198,7 @@ def listincome(request):
 
     return render(request, 'listincome.html', context)
 
-#@login_required(login_url='loginpage')
+@login_required(login_url='loginpage')
 def addincome(request):
     form = IncomeForm()
     income = Income.objects.all()
@@ -199,7 +214,7 @@ def addincome(request):
     context = {'form': form, 'income': income, 'payment_methods': payment_methods, 'categories': categories}
     return render(request, 'addincome.html', context)
 
-#@login_required(login_url='loginpage')
+@login_required(login_url='loginpage')
 def updateincome(request, pk):
 
     income = Income.objects.get(id=pk) 
@@ -217,7 +232,7 @@ def updateincome(request, pk):
     context = {'form':form,'payment_methods':payment_methods,'categories':categories}
     return render(request, 'updateincome.html', context)
 
-#@login_required(login_url='loginpage')
+@login_required(login_url='loginpage')
 def deleteincome(request, pk):
 
     income = Income.objects.get(id=pk)
@@ -231,7 +246,7 @@ def deleteincome(request, pk):
 
 
 
-#@login_required(login_url='loginpage')
+@login_required(login_url='loginpage')
 def invoice(request):
     return render(request, 'invoice.html')
 

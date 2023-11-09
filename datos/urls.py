@@ -18,4 +18,6 @@ urlpatterns = [
     path('updateincome/<str:pk>/', views.updateincome, name='updateincome'),
     path('deleteincome/<str:pk>/', views.deleteincome, name='deleteincome'),
     path('invoice/', views.invoice, name='invoice'),
+    path("listIncome/", views.listIncome, name="listIncome"),
+    path("listExpense/", views.listExpense, name="listExpense"),
 ]
