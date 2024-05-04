@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  datos_gunicorn:
+    volumes:
+      - staticfiles:/app/staticfiles
+    env_file:
+      - .env
+    build:
+      context: .
+      ports:
+        - "8001:8000"
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - staticfiles:/app/staticfiles
+    ports:
+      - "8002:80"
+    depends_on:
+      - datos_gunicorn
+
+  volumes:
+  staticfiles:
